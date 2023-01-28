@@ -1,21 +1,29 @@
 const express = require('express');
-const router = express.Router();
+const user = express.Router();
+const { User } = require('../database/models/index');
 
-//router.get('/', (req, res, next)=>{
-//    res.render('index', {title: 'Express'});
-//});
+user
+    .route('/') // /user
+    .get(async (req, res)=>{
+        const users = await User.findAll();
+        const result = [];
 
-router.get('/', (req, res, next)=>{
-    res.send('Hello');
-});
+        for(var user of users){
+            result.push({
+                id : user.id,
+                pwd : user.pwd
+            });
+        }
 
-router.post('/', (req, res, next)=>{
-    res.send('Post request');
-})
+        res.send(result);
+    })
+    .post((req, res)=>{
+        res.send("User Profile Page _ to be write")
+    })
+    .delete((req, res)=>{
+        res.send("User Profile Page _ to be write")
+    });
 
-router.get('/r/:sub/:id', (req, res)=>{
-    const {sub, id} = req.params;
-    res.send(`hello ${id} on ${sub}`);
-});
 
-module.exports = router;
+
+module.exports = user;
